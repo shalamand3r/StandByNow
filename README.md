@@ -6,7 +6,7 @@ StandByNow modifies pookjw's [StandPad](https://github.com/pookjw/StandPad) to w
 ---
 
 <p align="center">
-  <img src="https://github.com/shalamand3r/StandByNow/blob/master/StandByNow.png" width="300">
+  <img src="https://github.com/shalamand3r/StandByNow/blob/master/StandByNowIcon.png" width="300">
 </p>
 
 ---
