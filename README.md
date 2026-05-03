@@ -1,7 +1,7 @@
 # StandByNow 🕰️
 ### Activate StandBy (even when your iPhone isn't charging) on iOS 17.
 
-StandByNow modifies pookjw's [StandPad](https://github.com/pookjw/StandPad) to work on iPhones, allowing you to activate iOS 17's StandBy at any time by triple-clicking the power button.
+StandByNow modifies pookjw's [StandPad](https://github.com/pookjw/StandPad) to work on iPhones, allowing you to activate StandBy at any time by triple-clicking your iPhone's lock button.
 
 ---
 
