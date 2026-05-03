@@ -1,9 +1,9 @@
-Package: com.shalamander.standbynow
+Package: com.shalamand3r.standbynow
 Name: StandByNow
-Version: 0.0.1
+Version: 1.0
 Architecture: iphoneos-arm64
-Description: Activate StandBy anytime by triple clicking the side button. Edited version of pookjw's StandPad. Triple click detection taken from wrp1002's FlashlightSettings.
-Maintainer: shalamander
-Author: shalamander
+Description: Toggle StandBy on iOS even when not charging
+Maintainer: pookjw/shalamand3r
+Author: pookjw/shalamand3r
 Section: Tweaks
 Depends: firmware (>= 17.0)
