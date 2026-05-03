@@ -3,7 +3,7 @@ Name: StandByNow
 Version: 1.0
 Architecture: iphoneos-arm64
 Description: Toggle StandBy on iOS even when not charging
-Maintainer: pookjw/shalamand3r
-Author: pookjw/shalamand3r
+Maintainer: pookjw/wrp1002/shalamand3r
+Author: pookjw/wrp1002/shalamand3r
 Section: Tweaks
 Depends: firmware (>= 17.0)
