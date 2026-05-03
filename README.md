@@ -5,10 +5,12 @@ StandByNow modifies pookjw's [StandPad](https://github.com/pookjw/StandPad) to w
 
 ---
 
-<p align="center">
-  <img src="StandByNowIcon.png" width="300">
-  <img src="StandBySS.png" width="600">
-</p>
+<table align="center">
+  <tr>
+    <td><img src="StandByNowIcon.png" width="300"></td>
+    <td><img src="StandBySS.png" width="600"></td>
+  </tr>
+</table>
 
 ---
 
