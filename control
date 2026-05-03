@@ -1,9 +1,9 @@
-Package: com.pookjw.standpad
-Name: StandPad
-Version: 1.0
+Package: com.shalamander.standbynow
+Name: StandByNow
+Version: 0.0.1
 Architecture: iphoneos-arm64
-Description: Hello World!
-Maintainer: pookjw
-Author: pookjw
+Description: Activate StandBy anytime by triple clicking the side button. Edited version of pookjw's StandPad. Triple click detection taken from wrp1002's FlashlightSettings.
+Maintainer: shalamander
+Author: shalamander
 Section: Tweaks
 Depends: firmware (>= 17.0)
