@@ -19,3 +19,7 @@ StandByNow modifies pookjw's [StandPad](https://github.com/pookjw/StandPad) to w
 StandByNow supports **rootless jailbreaks** and requires iOS 17.0 or later.
 
 Download the latest version from **[Releases](https://github.com/shalamand3r/StandByNow/releases)** or **[Add my Sileo Repo](https://shalamand3r.github.io)**
+
+---
+
+[![Downloads](https://img.shields.io/github/downloads/shalamand3r/StandByNow/total?style=plastic&logo=github&color=404040)](https://github.com/shalamand3r/StandByNow/releases)
