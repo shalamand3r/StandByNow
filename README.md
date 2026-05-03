@@ -22,4 +22,8 @@ Download the latest version from **[Releases](https://github.com/shalamand3r/Sta
 
 ---
 
-[![Downloads](https://img.shields.io/github/downloads/shalamand3r/StandByNow/total?style=plastic&logo=github&color=404040)](https://github.com/shalamand3r/StandByNow/releases)
+<p align="center">
+  <a href="https://github.com/shalamand3r/StandByNow/releases">
+    <img src="https://img.shields.io/github/downloads/shalamand3r/StandByNow/total?style=plastic&logo=github&label=Downloads&color=404040">
+  </a>
+</p>
