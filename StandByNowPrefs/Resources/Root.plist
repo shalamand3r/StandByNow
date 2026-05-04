@@ -11,8 +11,6 @@
 			<string>Configuration</string>
 			<key>id</key>
 			<string>ConfigGroup</string>
-			<key>footerText</key>
-			<string></string>
 		</dict>
 
 		<dict>
@@ -39,7 +37,7 @@
 			<key>cell</key>
 			<string>PSLinkListCell</string>
 			<key>detail</key>
-			<string>PSListItemsController</string>
+			<string>StandByNowActivationController</string>
 			<key>key</key>
 			<string>kActivation</string>
 			<key>label</key>
@@ -77,6 +75,32 @@
 			<string>com.shalamand3r.standbynow/ReloadPrefs</string>
 		</dict>
 
+		<dict>
+			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>label</key>
+			<string>Open StandBy</string>
+			<key>action</key>
+			<string>openStandBy</string>
+		</dict>
+
+		<dict>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Source Code</string>
+		</dict>
+
+		<dict>
+			<key>cell</key>
+			<string>PSButtonCell</string>
+			<key>label</key>
+			<string>GitHub</string>
+			<key>id</key>
+			<string>GitHubCell</string>
+			<key>action</key>
+			<string>openGithub</string>
+		</dict>
 	</array>
 </dict>
 </plist>

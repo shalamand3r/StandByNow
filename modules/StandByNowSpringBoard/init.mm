@@ -81,6 +81,10 @@ static void PrefsChangeCallback(CFNotificationCenterRef center, void *observer, 
 	UpdatePrefs();
 }
 
+static void TriggerStandByCallback(CFNotificationCenterRef center, void *observer, CFNotificationName name, const void *object, CFDictionaryRef userInfo) {
+	ToggleStandBy();
+}
+
 static void DetectBothVolumeButtonsPressed(void) {
 	if (!gEnabled || !gUseVolume) return;
 	if (fabs(gLastVolumeUpPressTime - gLastVolumeDownPressTime) < 0.1) {
@@ -197,6 +201,14 @@ __attribute__((constructor)) static void init() {
 			NULL,
 			PrefsChangeCallback,
 			kPrefsNotify,
+			NULL,
+			CFNotificationSuspensionBehaviorDeliverImmediately
+		);
+		CFNotificationCenterAddObserver(
+			CFNotificationCenterGetDarwinNotifyCenter(),
+			NULL,
+			TriggerStandByCallback,
+			CFSTR("com.shalamand3r.standbynow/TriggerStandBy"),
 			NULL,
 			CFNotificationSuspensionBehaviorDeliverImmediately
 		);

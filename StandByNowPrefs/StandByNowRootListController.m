@@ -1,14 +1,23 @@
 #import <Foundation/Foundation.h>
+#import <sys/utsname.h>
 #import "StandByNowRootListController.h"
 
 #define BUNDLE @"com.shalamand3r.standbynow"
 #define BUNDLE_NOTIFY (CFStringRef)@"com.shalamand3r.standbynow/ReloadPrefs"
+
+static UIImage *_cachedGithubIcon = nil;
 
 @implementation StandByNowRootListController
 
 - (NSArray *)specifiers {
 	if (!_specifiers) {
 		_specifiers = [self loadSpecifiersFromPlistName:@"Root" target:self];
+		
+		for (PSSpecifier *spec in _specifiers) {
+			if ([[spec propertyForKey:@"id"] isEqualToString:@"GitHubCell"] && _cachedGithubIcon) {
+				[spec setProperty:_cachedGithubIcon forKey:@"iconImage"];
+			}
+		}
 	}
 	return _specifiers;
 }
@@ -42,34 +51,9 @@
 
 - (void)setPreferenceValue:(id)value specifier:(PSSpecifier *)specifier {
 	[super setPreferenceValue:value specifier:specifier];
-	if ([[specifier propertyForKey:@"key"] isEqualToString:@"kActivation"]) {
-		[self updateFooterWithActivation:value];
-	}
-}
-
-- (void)updateFooterWithActivation:(NSString *)activation {
-	PSSpecifier *groupSpecifier = [self specifierForID:@"ConfigGroup"];
-	if (!groupSpecifier) return;
-
-	NSString *footerText = @"";
-	if ([activation isEqualToString:@"tripleLock"]) {
-		footerText = @"Note: This gesture will take over your Accessibility Shortcuts.";
-	} else if ([activation isEqualToString:@"doubleLock"]) {
-		footerText = @"Note: This will replace the Apple Pay shortcut on your lock button.";
-	} else if ([activation isEqualToString:@"holdLock"]) {
-		footerText = @"Note: This gesture will disable Siri when using the lock button.";
-	} else if ([activation isEqualToString:@"volume"]) {
-		footerText = @"Note: This is a safe option that won't interfere with any system gestures.";
-	} else if ([activation isEqualToString:@"doubleHome"]) {
-		footerText = @"Note: This will override the App Switcher and Apple Pay. This isn't recommended as it can make navigation tricky.";
-	} else if ([activation isEqualToString:@"tripleHome"]) {
-		footerText = @"Note: This gesture will take over your Accessibility Shortcuts.";
-	} else if ([activation isEqualToString:@"holdHome"]) {
-		footerText = @"Note: This gesture will disable Siri when using the home button.";
-	}
-
-	[groupSpecifier setProperty:footerText forKey:@"footerText"];
-	[self reloadSpecifier:groupSpecifier];
+	
+	UIImpactFeedbackGenerator *haptic = [[UIImpactFeedbackGenerator alloc] initWithStyle:UIImpactFeedbackStyleLight];
+	[haptic impactOccurred];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -79,65 +63,120 @@
 	[UISwitch appearanceWhenContainedInInstancesOfClasses:@[[self class]]].onTintColor = tintColor;
 	self.view.tintColor = tintColor;
 
-	[self fetchGithubLogo];
-	
-	NSUserDefaults *prefs = [[NSUserDefaults alloc] initWithSuiteName:BUNDLE];
-	NSString *activation = [prefs objectForKey:@"kActivation"] ?: @"tripleLock";
-	[self updateFooterWithActivation:activation];
+	if (!_cachedGithubIcon) {
+		[self fetchGithubLogo];
+	}
 }
 
 - (void)fetchGithubLogo {
+	if (_cachedGithubIcon) return;
 	NSURL *url = [NSURL URLWithString:@"https://github.com/shalamand3r/shalamand3r.github.io/blob/main/CydiaIcon.png?raw=true"];
 	[[[NSURLSession sharedSession] dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
 		if (data && !error) {
 			UIImage *image = [UIImage imageWithData:data];
 			if (image) {
+				UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 29, 29)];
+				imageView.image = image;
+				imageView.layer.cornerRadius = 7;
+				imageView.layer.masksToBounds = YES;
+				imageView.layer.contentsGravity = kCAGravityResizeAspectFill;
+				
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+				CGFloat scale = [UIScreen mainScreen].scale;
+#pragma clang diagnostic pop
+				UIGraphicsBeginImageContextWithOptions(imageView.bounds.size, NO, scale);
+				[imageView.layer renderInContext:UIGraphicsGetCurrentContext()];
+				UIImage *squircleImage = UIGraphicsGetImageFromCurrentImageContext();
+				UIGraphicsEndImageContext();
+				
+				_cachedGithubIcon = squircleImage;
 				dispatch_async(dispatch_get_main_queue(), ^{
-					if ([self specifierForID:@"GitHubCell"]) return;
-
-					PSSpecifier *groupSpecifier = [PSSpecifier preferenceSpecifierNamed:@"Links"
-						target:self
-						set:NULL
-						get:NULL
-						detail:Nil
-						cell:PSGroupCell
-						edit:Nil];
-					
-					PSSpecifier *githubSpecifier = [PSSpecifier preferenceSpecifierNamed:@"Source Code (GitHub)"
-						target:self
-						set:NULL
-						get:NULL
-						detail:Nil
-						cell:PSButtonCell
-						edit:Nil];
-					[githubSpecifier setProperty:@"GitHubCell" forKey:@"id"];
-					githubSpecifier.buttonAction = @selector(openGithub);
-					
-					UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 29, 29)];
-					imageView.image = image;
-					imageView.layer.cornerRadius = 7;
-					imageView.layer.masksToBounds = YES;
-					imageView.layer.contentsGravity = kCAGravityResizeAspectFill;
-					
-					UIScreen *screen = self.view.window.windowScene.screen ?: self.view.window.screen;
-					CGFloat scale = screen ? screen.scale : 3.0;
-					UIGraphicsBeginImageContextWithOptions(imageView.bounds.size, NO, scale);
-					[imageView.layer renderInContext:UIGraphicsGetCurrentContext()];
-					UIImage *squircleImage = UIGraphicsGetImageFromCurrentImageContext();
-					UIGraphicsEndImageContext();
-					
-					[githubSpecifier setProperty:squircleImage forKey:@"iconImage"];
-					
-					[self addSpecifier:groupSpecifier animated:YES];
-					[self addSpecifier:githubSpecifier animated:YES];
+					PSSpecifier *githubSpecifier = [self specifierForID:@"GitHubCell"];
+					if (githubSpecifier) {
+						[githubSpecifier setProperty:squircleImage forKey:@"iconImage"];
+						[self reloadSpecifier:githubSpecifier];
+					}
 				});
 			}
 		}
 	}] resume];
 }
 
+- (void)openStandBy {
+	UIImpactFeedbackGenerator *haptic = [[UIImpactFeedbackGenerator alloc] initWithStyle:UIImpactFeedbackStyleHeavy];
+	[haptic impactOccurred];
+	CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), CFSTR("com.shalamand3r.standbynow/TriggerStandBy"), NULL, NULL, YES);
+}
+
 - (void)openGithub {
+	UIImpactFeedbackGenerator *haptic = [[UIImpactFeedbackGenerator alloc] initWithStyle:UIImpactFeedbackStyleMedium];
+	[haptic impactOccurred];
 	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://github.com/shalamand3r/StandByNow"] options:@{} completionHandler:nil];
+}
+
+@end
+
+@implementation StandByNowActivationController
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	[super tableView:tableView didSelectRowAtIndexPath:indexPath];
+	
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+		NSUserDefaults *prefs = [[NSUserDefaults alloc] initWithSuiteName:BUNDLE];
+		NSString *activation = [prefs objectForKey:@"kActivation"] ?: @"tripleLock";
+		[self updateFooterWithActivation:activation];
+	});
+}
+
+- (void)updateFooterWithActivation:(NSString *)activation {
+	PSSpecifier *groupSpecifier = [self specifierForID:@"ActivationFooterGroup"];
+	if (!groupSpecifier) return;
+
+	NSString *footerText = @"";
+
+	if ([activation isEqualToString:@"tripleLock"]) {
+		footerText = @"Lock Button Triple Click will override your Accessibility Shortcuts.";
+	} else if ([activation isEqualToString:@"doubleLock"]) {
+		footerText = @"Lock Button Double Click will override the Apple Pay shortcut.";
+	} else if ([activation isEqualToString:@"holdLock"]) {
+		footerText = @"Lock Button Hold will override the power off gesture.";
+	} else if ([activation isEqualToString:@"volume"]) {
+		footerText = @"Volume Up + Down is a safe option that won't interfere with any system gestures.";
+	} else if ([activation isEqualToString:@"doubleHome"]) {
+		footerText = @"Home Button Double Click will override the App Switcher and Apple Pay. This is NOT recommended.";
+	} else if ([activation isEqualToString:@"tripleHome"]) {
+		footerText = @"Home Button Triple Click will override your Accessibility Shortcuts.";
+	} else if ([activation isEqualToString:@"holdHome"]) {
+		footerText = @"Home Button Hold will override Siri.";
+	}
+
+	[groupSpecifier setProperty:footerText forKey:@"footerText"];
+	[[self table] reloadData];
+}
+
+- (NSArray *)specifiers {
+	if (!_specifiers) {
+		NSMutableArray *specs = [[super specifiers] mutableCopy];
+		
+		for (PSSpecifier *spec in specs) {
+			if (spec.cellType == PSGroupCell) {
+				[spec setProperty:@"ActivationFooterGroup" forKey:@"id"];
+				break;
+			}
+		}
+		
+		_specifiers = [specs copy];
+	}
+	return _specifiers;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	
+	NSUserDefaults *prefs = [[NSUserDefaults alloc] initWithSuiteName:BUNDLE];
+	NSString *activation = [prefs objectForKey:@"kActivation"] ?: @"tripleLock";
+	[self updateFooterWithActivation:activation];
 }
 
 @end
