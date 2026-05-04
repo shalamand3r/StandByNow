@@ -3,7 +3,6 @@
 #import "StandByNowRootListController.h"
 
 #define BUNDLE @"com.shalamand3r.standbynow"
-#define BUNDLE_NOTIFY (CFStringRef)@"com.shalamand3r.standbynow/ReloadPrefs"
 
 static UIImage *_cachedGithubIcon = nil;
 
