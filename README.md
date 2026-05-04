@@ -8,7 +8,13 @@ StandByNow modifies pookjw's [StandPad](https://github.com/pookjw/StandPad) to w
 <table align="center">
   <tr>
     <td align="center" valign="middle"><img src="StandByNowIcon.png" width="282"></td>
-    <td align="center" valign="middle"><img src="StandBySS.png" width="600"></td>
+    <td align="center" valign="middle">
+      <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="StandBySSD.PNG">
+        <source media="(prefers-color-scheme: light)" srcset="StandBySSL.PNG">
+        <img src="StandBySSL.PNG" width="600" alt="StandByNow screenshot">
+      </picture>
+    </td>
   </tr>
 </table>
 
