@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 #import <sys/utsname.h>
 #import "StandByNowRootListController.h"
 
@@ -13,12 +14,49 @@ static UIImage *_cachedGithubIcon = nil;
 		_specifiers = [self loadSpecifiersFromPlistName:@"Root" target:self];
 		
 		for (PSSpecifier *spec in _specifiers) {
-			if ([[spec propertyForKey:@"id"] isEqualToString:@"GitHubCell"] && _cachedGithubIcon) {
-				[spec setProperty:_cachedGithubIcon forKey:@"iconImage"];
+			if ([[spec propertyForKey:@"id"] isEqualToString:@"GitHubCell"]) {
+				if (_cachedGithubIcon) {
+					[spec setProperty:_cachedGithubIcon forKey:@"iconImage"];
+				} else {
+					UIGraphicsBeginImageContextWithOptions(CGSizeMake(29, 29), NO, 0);
+					UIImage *blank = UIGraphicsGetImageFromCurrentImageContext();
+					UIGraphicsEndImageContext();
+					[spec setProperty:blank forKey:@"iconImage"];
+				}
 			}
 		}
 	}
 	return _specifiers;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	UITableViewCell *cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
+	PSSpecifier *specifier = [self specifierAtIndexPath:indexPath];
+	
+	if ([[specifier propertyForKey:@"id"] isEqualToString:@"GitHubCell"]) {
+		if (!_cachedGithubIcon) {
+			UIActivityIndicatorView *spinner = (UIActivityIndicatorView *)[cell.imageView viewWithTag:1234];
+			if (!spinner) {
+				spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleMedium];
+				spinner.tag = 1234;
+				[cell.imageView addSubview:spinner];
+				
+				spinner.translatesAutoresizingMaskIntoConstraints = NO;
+				[NSLayoutConstraint activateConstraints:@[
+					[spinner.centerXAnchor constraintEqualToAnchor:cell.imageView.centerXAnchor],
+					[spinner.centerYAnchor constraintEqualToAnchor:cell.imageView.centerYAnchor]
+				]];
+			}
+			[spinner startAnimating];
+		} else {
+			UIView *spinner = [cell.imageView viewWithTag:1234];
+			if (spinner) {
+				[spinner removeFromSuperview];
+			}
+		}
+	}
+	
+	return cell;
 }
 
 - (void)loadView {
@@ -95,6 +133,17 @@ static UIImage *_cachedGithubIcon = nil;
 					if (githubSpecifier) {
 						[githubSpecifier setProperty:squircleImage forKey:@"iconImage"];
 						[self reloadSpecifier:githubSpecifier];
+						
+						NSIndexPath *indexPath = [self indexPathForSpecifier:githubSpecifier];
+						if (indexPath) {
+							UITableViewCell *cell = [self.table cellForRowAtIndexPath:indexPath];
+							if (cell) {
+								UIView *spinner = [cell.imageView viewWithTag:1234];
+								if (spinner) {
+									[spinner removeFromSuperview];
+								}
+							}
+						}
 					}
 				});
 			}
