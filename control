@@ -1,6 +1,6 @@
 Package: com.shalamand3r.standbynow
 Name: StandByNow
-Version: 1.0
+Version: 1.1
 Architecture: iphoneos-arm64
 Description: Toggle StandBy on iOS even when not charging
 Maintainer: pookjw/wrp1002/shalamand3r
