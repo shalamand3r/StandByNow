@@ -8,9 +8,11 @@
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>label</key>
-			<string>StandByNow</string>
+			<string>Configuration</string>
+			<key>id</key>
+			<string>ConfigGroup</string>
 			<key>footerText</key>
-			<string>Choose which button gesture toggles StandBy.</string>
+			<string></string>
 		</dict>
 
 		<dict>
@@ -20,6 +22,11 @@
 			<string>kEnabled</string>
 			<key>label</key>
 			<string>Enabled</string>
+			<key>iconImageSystem</key>
+			<dict>
+				<key>name</key>
+				<string>power</string>
+			</dict>
 			<key>default</key>
 			<true/>
 			<key>defaults</key>
@@ -37,9 +44,13 @@
 			<string>kActivation</string>
 			<key>label</key>
 			<string>Activation</string>
+			<key>iconImageSystem</key>
+			<dict>
+				<key>name</key>
+				<string>hand.tap</string>
+			</dict>
 			<key>validTitles</key>
 			<array>
-				<string>Disabled</string>
 				<string>Lock Button Triple Click</string>
 				<string>Lock Button Double Click</string>
 				<string>Lock Button Hold</string>
@@ -50,7 +61,6 @@
 			</array>
 			<key>validValues</key>
 			<array>
-				<string>disabled</string>
 				<string>tripleLock</string>
 				<string>doubleLock</string>
 				<string>holdLock</string>
@@ -69,26 +79,21 @@
 
 		<dict>
 			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Links</string>
+		</dict>
+
+		<dict>
+			<key>cell</key>
 			<string>PSButtonCell</string>
 			<key>label</key>
-			<string>Reset Settings</string>
+			<string>Source Code (GitHub)</string>
+			<key>id</key>
+			<string>GitHubCell</string>
 			<key>action</key>
-			<string>Reset</string>
-			<key>isDestructive</key>
-			<true/>
-			<key>confirmation</key>
-			<dict>
-				<key>prompt</key>
-				<string>Reset all StandByNow settings?</string>
-				<key>title</key>
-				<string>Reset</string>
-				<key>cancelTitle</key>
-				<string>Cancel</string>
-				<key>okTitle</key>
-				<string>Reset</string>
-			</dict>
+			<string>openGithub</string>
 		</dict>
 	</array>
 </dict>
 </plist>
-
