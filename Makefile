@@ -8,5 +8,6 @@ PACKAGE_REVISION = 1
 include $(THEOS)/makefiles/common.mk
 
 SUBPROJECTS += modules/StandByNowSpringBoard
+SUBPROJECTS += StandByNowPrefs
 
 include $(THEOS_MAKE_PATH)/aggregate.mk

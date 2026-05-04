@@ -6,6 +6,6 @@ Description: Toggle StandBy on iOS even when not charging
 Maintainer: pookjw/wrp1002/shalamand3r
 Author: pookjw/wrp1002/shalamand3r
 Section: Tweaks
-Depends: firmware (>= 17.0)
+Depends: firmware (>= 17.0), preferenceloader
 Icon: https://github.com/shalamand3r/shalamand3r.github.io/blob/main/icons/standbynow.png?raw=true
 SileoDepiction: https://raw.githubusercontent.com/shalamand3r/shalamand3r.github.io/refs/heads/main/depictions/standbynow.json

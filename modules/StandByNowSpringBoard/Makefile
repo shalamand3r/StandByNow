@@ -11,3 +11,6 @@ $(TWEAK_NAME)_FILES = $(shell find . -type f -name  "*.mm")
 include $(THEOS)/makefiles/common.mk
 include $(THEOS_MAKE_PATH)/tweak.mk
 include $(THEOS_MAKE_PATH)/aggregate.mk
+
+after-stage::
+	@/usr/local/bin/ldid -S "$(THEOS_STAGING_DIR)/var/jb/Library/MobileSubstrate/DynamicLibraries/StandByNowSpringBoard.dylib" || true
