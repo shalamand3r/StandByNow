@@ -53,19 +53,19 @@
 
 	NSString *footerText = @"";
 	if ([activation isEqualToString:@"tripleLock"]) {
-		footerText = @"Overrides Accessibility Shortcuts.";
+		footerText = @"Note: This gesture will take over your Accessibility Shortcuts.";
 	} else if ([activation isEqualToString:@"doubleLock"]) {
-		footerText = @"Overrides Apple Pay activation.";
+		footerText = @"Note: This will replace the Apple Pay shortcut on your lock button.";
 	} else if ([activation isEqualToString:@"holdLock"]) {
-		footerText = @"Overrides Siri.";
+		footerText = @"Note: This gesture will disable Siri when using the lock button.";
 	} else if ([activation isEqualToString:@"volume"]) {
-		footerText = @"Does not override system gestures.";
+		footerText = @"Note: This is a safe option that won't interfere with any system gestures.";
 	} else if ([activation isEqualToString:@"doubleHome"]) {
-		footerText = @"Overrides App Switcher + Apple Pay on Lock Screen. (Not recommended)";
+		footerText = @"Note: This will override the App Switcher and Apple Pay. This isn't recommended as it can make navigation tricky.";
 	} else if ([activation isEqualToString:@"tripleHome"]) {
-		footerText = @"Overrides Accessibility Shortcuts.";
+		footerText = @"Note: This gesture will take over your Accessibility Shortcuts.";
 	} else if ([activation isEqualToString:@"holdHome"]) {
-		footerText = @"Overrides Siri.";
+		footerText = @"Note: This gesture will disable Siri when using the home button.";
 	}
 
 	[groupSpecifier setProperty:footerText forKey:@"footerText"];
@@ -93,24 +93,43 @@
 			UIImage *image = [UIImage imageWithData:data];
 			if (image) {
 				dispatch_async(dispatch_get_main_queue(), ^{
-					PSSpecifier *githubSpecifier = [self specifierForID:@"GitHubCell"];
-					if (githubSpecifier) {
-						UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 29, 29)];
-						imageView.image = image;
-						imageView.layer.cornerRadius = 7;
-						imageView.layer.masksToBounds = YES;
-						imageView.layer.contentsGravity = kCAGravityResizeAspectFill;
-						
-							UIScreen *screen = self.view.window.windowScene.screen ?: self.view.window.screen;
-							CGFloat scale = screen ? screen.scale : 3.0;
-							UIGraphicsBeginImageContextWithOptions(imageView.bounds.size, NO, scale);
-						[imageView.layer renderInContext:UIGraphicsGetCurrentContext()];
-						UIImage *squircleImage = UIGraphicsGetImageFromCurrentImageContext();
-						UIGraphicsEndImageContext();
-						
-						[githubSpecifier setProperty:squircleImage forKey:@"iconImage"];
-						[self reloadSpecifier:githubSpecifier];
-					}
+					if ([self specifierForID:@"GitHubCell"]) return;
+
+					PSSpecifier *groupSpecifier = [PSSpecifier preferenceSpecifierNamed:@"Links"
+						target:self
+						set:NULL
+						get:NULL
+						detail:Nil
+						cell:PSGroupCell
+						edit:Nil];
+					
+					PSSpecifier *githubSpecifier = [PSSpecifier preferenceSpecifierNamed:@"Source Code (GitHub)"
+						target:self
+						set:NULL
+						get:NULL
+						detail:Nil
+						cell:PSButtonCell
+						edit:Nil];
+					[githubSpecifier setProperty:@"GitHubCell" forKey:@"id"];
+					githubSpecifier.buttonAction = @selector(openGithub);
+					
+					UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 29, 29)];
+					imageView.image = image;
+					imageView.layer.cornerRadius = 7;
+					imageView.layer.masksToBounds = YES;
+					imageView.layer.contentsGravity = kCAGravityResizeAspectFill;
+					
+					UIScreen *screen = self.view.window.windowScene.screen ?: self.view.window.screen;
+					CGFloat scale = screen ? screen.scale : 3.0;
+					UIGraphicsBeginImageContextWithOptions(imageView.bounds.size, NO, scale);
+					[imageView.layer renderInContext:UIGraphicsGetCurrentContext()];
+					UIImage *squircleImage = UIGraphicsGetImageFromCurrentImageContext();
+					UIGraphicsEndImageContext();
+					
+					[githubSpecifier setProperty:squircleImage forKey:@"iconImage"];
+					
+					[self addSpecifier:groupSpecifier animated:YES];
+					[self addSpecifier:githubSpecifier animated:YES];
 				});
 			}
 		}

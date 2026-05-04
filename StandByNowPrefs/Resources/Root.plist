@@ -77,23 +77,6 @@
 			<string>com.shalamand3r.standbynow/ReloadPrefs</string>
 		</dict>
 
-		<dict>
-			<key>cell</key>
-			<string>PSGroupCell</string>
-			<key>label</key>
-			<string>Links</string>
-		</dict>
-
-		<dict>
-			<key>cell</key>
-			<string>PSButtonCell</string>
-			<key>label</key>
-			<string>Source Code (GitHub)</string>
-			<key>id</key>
-			<string>GitHubCell</string>
-			<key>action</key>
-			<string>openGithub</string>
-		</dict>
 	</array>
 </dict>
 </plist>
