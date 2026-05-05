@@ -184,17 +184,17 @@ static UIImage *_cachedGithubIcon = nil;
 	NSString *footerText = @"";
 
 	if ([activation isEqualToString:@"tripleLock"]) {
-		footerText = @"Lock Button Triple Click will override your Accessibility Shortcuts.";
+		footerText = @"Lock Button Triple Click will override Accessibility Shortcuts.";
 	} else if ([activation isEqualToString:@"doubleLock"]) {
-		footerText = @"Lock Button Double Click will override the Apple Pay shortcut.";
+		footerText = @"Lock Button Double Click will override Apple Pay.";
 	} else if ([activation isEqualToString:@"holdLock"]) {
-		footerText = @"Lock Button Hold will override the power off gesture.";
+		footerText = @"Lock Button Hold will override Siri.";
 	} else if ([activation isEqualToString:@"volume"]) {
-		footerText = @"Volume Up + Down is a safe option that won't interfere with any system gestures.";
+		footerText = @"Simultaneously press both volume buttons to activate StandBy.";
 	} else if ([activation isEqualToString:@"doubleHome"]) {
-		footerText = @"Home Button Double Click will override the App Switcher and Apple Pay. This is NOT recommended.";
+		footerText = @"Home Button Double Click will override the App Switcher and Apple Pay. (NOT recommended).";
 	} else if ([activation isEqualToString:@"tripleHome"]) {
-		footerText = @"Home Button Triple Click will override your Accessibility Shortcuts.";
+		footerText = @"Home Button Triple Click will override Accessibility Shortcuts.";
 	} else if ([activation isEqualToString:@"holdHome"]) {
 		footerText = @"Home Button Hold will override Siri.";
 	}
